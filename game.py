@@ -24,13 +24,13 @@ BLUE2 = (0, 100, 255)
 BLACK = (0,0,0)
 
 BLOCK_SIZE = 20
+SPEED = 100
 
 class SnakeGameAI:
     
     def __init__(self, w=640, h=480):
         self.w = w
         self.h = h
-        self.speed = 40
         # init display
         self.display = pygame.display.set_mode((self.w, self.h))
         pygame.display.set_caption('Snake')
@@ -73,7 +73,7 @@ class SnakeGameAI:
         # 3. check if game over
         reward = 0 # initialized to zero
         game_over = False
-        if self.is_collision() or self.frame_iteration > 100*len(self.snake): # Either if there is collision or if there is no meaningful output (if snake is moving too long without eating food)
+        if self.is_collision() or self.frame_iteration > 200: # Either if there is collision or if there is no meaningful output (if snake is moving too long without eating food)
             game_over = True
             reward = -10
             return reward, game_over, self.score
@@ -83,13 +83,13 @@ class SnakeGameAI:
             self.score += 1
             reward = 10
             self._place_food()
-            self.speed += 0.5
+            self.frame_iteration = 0 # Reset frame counter after eating
         else:
             self.snake.pop()
         
         # 5. update ui and clock
         self._update_ui()
-        self.clock.tick(self.speed)
+        self.clock.tick(SPEED)
         # 6. return game over and score
         return reward, game_over, self.score
     

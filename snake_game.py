@@ -21,15 +21,16 @@ RED = (200,0,0)
 BLUE1 = (0, 0, 255)
 BLUE2 = (0, 100, 255)
 BLACK = (0,0,0)
+GRAY = (40, 40, 40)
 
 BLOCK_SIZE = 20
+SPEED = 10
 
 class SnakeGame:
     
     def __init__(self, w=640, h=480):
         self.w = w
         self.h = h
-        self.speed = 10
         # init display
         self.display = pygame.display.set_mode((self.w, self.h))
         pygame.display.set_caption('Snake')
@@ -84,13 +85,12 @@ class SnakeGame:
         if self.head == self.food:
             self.score += 1
             self._place_food()
-            self.speed += 0.5
         else:
             self.snake.pop()
         
         # 5. update ui and clock
         self._update_ui()
-        self.clock.tick(self.speed)
+        self.clock.tick(SPEED)
         # 6. return game over and score
         return game_over, self.score
     
@@ -107,6 +107,12 @@ class SnakeGame:
     def _update_ui(self):
         self.display.fill(BLACK)
         
+        # Draw grid
+        for x in range(0, self.display.get_width(), BLOCK_SIZE):
+            pygame.draw.line(self.display, GRAY, (x, 0), (x, self.display.get_height()))
+        for y in range(0, self.display.get_height(), BLOCK_SIZE):
+            pygame.draw.line(self.display, GRAY, (0, y), (self.display.get_width(), y))
+
         for pt in self.snake:
             pygame.draw.rect(self.display, BLUE1, pygame.Rect(pt.x, pt.y, BLOCK_SIZE, BLOCK_SIZE))
             pygame.draw.rect(self.display, BLUE2, pygame.Rect(pt.x+4, pt.y+4, 12, 12))
