@@ -59,9 +59,9 @@ class QTrainer:
         # 2: Q_new = R + y * max(next_predicted Q value) // this is one value. But Q_new should be in the same format as pred -> only do this if not done
         # pred.clone() // Hence we are cloning
         # preds[argmax(action)] = Q_new
-        self.optimizer.zero_grad()
+        self.optimizer.zero_grad() # clear gradients from previous steps calculations
         loss = self.criterion(target, pred)
-        loss.backward()
+        loss.backward() # Computes the gradient of loss for the back propagation steps
 
         self.optimizer.step()
 

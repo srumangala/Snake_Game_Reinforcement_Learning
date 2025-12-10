@@ -19,7 +19,6 @@ class Agent:
         self.memory = deque(maxlen = MAX_MEMORY) # popleft() - remove elements from the left
         self.model = Linear_QNet(11,256,3) # Input size, Hidden Layer size, Output size
         self.trainer = QTrainer(self.model, lr = LR, gamma = self.gamma)
-        # TODO: model, trainer
 
     def get_state(self, game):
         head = game.snake[0] # the head of the snake
